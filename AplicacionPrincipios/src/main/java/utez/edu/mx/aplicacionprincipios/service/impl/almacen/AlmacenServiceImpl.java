@@ -52,11 +52,12 @@ public class AlmacenServiceImpl implements AlmacenService {
         return almacenRepository.findAll();
     }
 
+
     @Override
     public Almacen obtenerPorId(Integer id) {
-        return almacenRepository.findById(id).orElseThrow();
+        return almacenRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("No se encontró el almacén con ID: " + id));
     }
-
     @Override
     public Almacen actualizar(Integer id, Almacen almacen) {
         Almacen existente = obtenerPorId(id);

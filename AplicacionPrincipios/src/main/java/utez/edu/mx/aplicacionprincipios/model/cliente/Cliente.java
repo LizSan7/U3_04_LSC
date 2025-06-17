@@ -1,8 +1,13 @@
 package utez.edu.mx.aplicacionprincipios.model.cliente;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import utez.edu.mx.aplicacionprincipios.model.operacion.Operacion;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -22,5 +27,11 @@ public class Cliente {
     @Email
     @NotBlank
     private String correo;
+
+    @JsonManagedReference(value="cliente-operacion")
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("cliente")
+    private List<Operacion> operaciones;
+
 }
 
