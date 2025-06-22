@@ -24,7 +24,7 @@ public class Almacen {
     private LocalDate fechaRegistro;
     private double precioVenta;
     private double precioRenta;
-    private char tamaño;
+    private char tamano;
 
     @JsonBackReference(value="cede-almacen")
     @ManyToOne

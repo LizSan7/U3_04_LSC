@@ -1,14 +1,15 @@
 package utez.edu.mx.aplicacionprincipios.service.cliente;
 
+import utez.edu.mx.aplicacionprincipios.dto.cliente.ClienteDTO;
 import utez.edu.mx.aplicacionprincipios.model.cliente.Cliente;
 
 import java.util.List;
 
 public interface ClienteService {
-    List<Cliente> listar();
-    Cliente guardar(Cliente cliente);
-    Cliente obtenerPorId(Integer id);
-    Cliente actualizar(Integer id, Cliente cliente);
+    ClienteDTO guardar(ClienteDTO dto);
+    List<ClienteDTO> listar();
+    ClienteDTO obtenerPorId(Integer id);
+    ClienteDTO actualizar(Integer id, ClienteDTO dto);
     void eliminar(Integer id);
 }
 
