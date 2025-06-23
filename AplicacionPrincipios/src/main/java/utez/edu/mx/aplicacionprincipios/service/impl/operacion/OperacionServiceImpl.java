@@ -30,6 +30,15 @@ public class OperacionServiceImpl implements OperacionService {
 
         Almacen almacen = almacenRepository.findById(dto.getAlmacenId())
                 .orElseThrow(() -> new RuntimeException("Almacén no encontrado"));
+
+        boolean yaOperado = operacionRepository.existsByAlmacenIdAndTipoOperacionIn(
+                almacen.getId(), List.of("venta", "renta")
+        );
+
+        if (yaOperado) {
+            throw new RuntimeException("El almacén ya ha sido vendido o rentado y no se puede operar de nuevo.");
+        }
+
         operacion.setAlmacen(almacen);
 
         Cliente cliente = clienteRepository.findById(dto.getClienteId())
@@ -48,6 +57,7 @@ public class OperacionServiceImpl implements OperacionService {
 
         return convertToDTO(operacionRepository.save(operacion));
     }
+
 
     @Override
     public List<OperacionDTO> listar() {
@@ -69,6 +79,13 @@ public class OperacionServiceImpl implements OperacionService {
         Operacion operacion = operacionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Operación no encontrada"));
 
+        String tipoActual = operacion.getTipoOperacion().toLowerCase();
+        String nuevoTipo = dto.getTipoOperacion().toLowerCase();
+
+        if ("venta".equals(tipoActual) && "renta".equals(nuevoTipo)) {
+            throw new RuntimeException("No se puede cambiar una operación de tipo venta a renta");
+        }
+
         operacion.setTipoOperacion(dto.getTipoOperacion());
 
         Almacen almacen = almacenRepository.findById(dto.getAlmacenId())
@@ -79,9 +96,9 @@ public class OperacionServiceImpl implements OperacionService {
                 .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
         operacion.setCliente(cliente);
 
-        if ("venta".equalsIgnoreCase(dto.getTipoOperacion())) {
+        if ("venta".equalsIgnoreCase(nuevoTipo)) {
             operacion.setMonto(almacen.getPrecioVenta());
-        } else if ("renta".equalsIgnoreCase(dto.getTipoOperacion())) {
+        } else if ("renta".equalsIgnoreCase(nuevoTipo)) {
             operacion.setMonto(almacen.getPrecioRenta());
         } else {
             throw new RuntimeException("Tipo de operación inválido");
@@ -89,7 +106,6 @@ public class OperacionServiceImpl implements OperacionService {
 
         return convertToDTO(operacionRepository.save(operacion));
     }
-
 
     @Override
     public void eliminar(Integer id) {
