@@ -26,6 +26,7 @@ public class Cliente {
 
     @Email
     @NotBlank
+    @Column(unique = true)
     private String correo;
 
     @JsonManagedReference(value="cliente-operacion")

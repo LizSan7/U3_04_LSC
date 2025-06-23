@@ -46,10 +46,8 @@ public class AlmacenServiceImpl implements AlmacenService {
         String claveAlmacen = savedAlmacen.getCede().getClave() + "-A" + savedAlmacen.getId();
         savedAlmacen.setClave(claveAlmacen);
 
-        // 3. Guardar nuevamente con la clave generada
         savedAlmacen = almacenRepository.save(savedAlmacen);
 
-        // 4. Convertir a DTO y devolver
         return convertToDTO(savedAlmacen);
     }
 

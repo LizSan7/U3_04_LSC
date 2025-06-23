@@ -11,5 +11,6 @@ public interface ClienteService {
     ClienteDTO obtenerPorId(Integer id);
     ClienteDTO actualizar(Integer id, ClienteDTO dto);
     void eliminar(Integer id);
+    ClienteDTO obtenerPorCorreo(String correo);
 }
 
