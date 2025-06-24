@@ -2,6 +2,8 @@ package utez.edu.mx.aplicacionprincipios.service.impl.operacion;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import utez.edu.mx.aplicacionprincipios.dto.almacen.AlmacenDTO;
+import utez.edu.mx.aplicacionprincipios.dto.cliente.ClienteDTO;
 import utez.edu.mx.aplicacionprincipios.dto.operacion.OperacionDTO;
 import utez.edu.mx.aplicacionprincipios.model.almacen.Almacen;
 import utez.edu.mx.aplicacionprincipios.model.almacen.AlmacenRepository;
@@ -112,19 +114,7 @@ public class OperacionServiceImpl implements OperacionService {
         operacionRepository.deleteById(id);
     }
 
-    @Override
-    public List<OperacionDTO> obtenerPorCliente(Integer clienteId) {
-        return operacionRepository.findByClienteId(clienteId).stream()
-                .map(operacion -> convertToDTO((Operacion) operacion))
-                .collect(Collectors.toList());
-    }
 
-    @Override
-    public List<OperacionDTO> obtenerPorAlmacen(Integer almacenId) {
-        return operacionRepository.findByAlmacenId(almacenId).stream()
-                .map(operacion -> convertToDTO((Operacion) operacion))
-                .collect(Collectors.toList());
-    }
 
     private OperacionDTO convertToDTO(Operacion operacion) {
         OperacionDTO dto = new OperacionDTO();
@@ -134,6 +124,26 @@ public class OperacionServiceImpl implements OperacionService {
         dto.setFechaOperacion(operacion.getFechaOperacion());
         dto.setAlmacenId(operacion.getAlmacen().getId());
         dto.setClienteId(operacion.getCliente().getId());
+
+        AlmacenDTO almacenDTO = new AlmacenDTO();
+        almacenDTO.setId(operacion.getAlmacen().getId());
+        almacenDTO.setClave(operacion.getAlmacen().getClave());
+        almacenDTO.setPrecioVenta(operacion.getAlmacen().getPrecioVenta());
+        almacenDTO.setPrecioRenta(operacion.getAlmacen().getPrecioRenta());
+        almacenDTO.setTamano(String.valueOf(operacion.getAlmacen().getTamano()));
+        almacenDTO.setFechaRegistro(operacion.getAlmacen().getFechaRegistro());
+        almacenDTO.setCedeId(operacion.getAlmacen().getCede().getId());
+        dto.setAlmacen(almacenDTO);
+
+        ClienteDTO clienteDTO = new ClienteDTO();
+        clienteDTO.setId(operacion.getCliente().getId());
+        clienteDTO.setNombreCompleto(operacion.getCliente().getNombreCompleto());
+        clienteDTO.setCorreo(operacion.getCliente().getCorreo());
+        clienteDTO.setTelefono(operacion.getCliente().getTelefono());
+
+        dto.setCliente(clienteDTO);
+
         return dto;
     }
+
 }

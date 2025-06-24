@@ -11,6 +11,4 @@ public interface OperacionService {
     OperacionDTO obtenerPorId(Integer id);
     OperacionDTO actualizar(Integer id, OperacionDTO dto);
     void eliminar(Integer id);
-    List<OperacionDTO> obtenerPorCliente(Integer clienteId);
-    List<OperacionDTO> obtenerPorAlmacen(Integer almacenId);
 }
